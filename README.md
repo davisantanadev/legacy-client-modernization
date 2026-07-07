@@ -1,10 +1,10 @@
-# Modernizacao de Sistema Legado - Cooperativa Financeira Genesis 
+# Modernizacao de Sistema Legado - Cooperativa Genesis
 
 Projeto Final do treinamento **Acelera Maker / Montreal - COBOL**, com foco na modernizacao de um sistema legado de cadastro de clientes, integrando uma API ASP.NET Core 8 a um componente COBOL existente (GnuCOBOL), preservando o processamento legado e adicionando uma camada moderna de acesso.
 
 ## Cenario
 
-A Cooperativa Financeira Genesis possui um sistema legado responsavel pelo cadastro de clientes. O objetivo deste projeto e permitir que atendentes consultem e atualizem dados de clientes atraves de uma API moderna, mantendo compatibilidade com o processamento COBOL existente, sem substitui-lo.
+A Cooperativa Genesis possui um sistema legado responsavel pelo cadastro de clientes. O objetivo deste projeto e permitir que atendentes consultem e atualizem dados de clientes atraves de uma API moderna, mantendo compatibilidade com o processamento COBOL existente, sem substitui-lo.
 
 ## Arquitetura
 
@@ -65,8 +65,9 @@ legacy-client-modernization/
 
 - .NET 8 SDK
 - GnuCOBOL 2.0 (32 bits) instalado, com o diretorio `bin` do GnuCOBOL adicionado ao `PATH` do sistema
-- MySQL em execucao, com o banco `BankSystem` e a tabela `clientes` criados
-- Driver ODBC (32 e 64 bits) configurado para o MySQL
+- MySQL Server instalado e em execucao, com o banco `BankSystem` e a tabela `clientes` criados
+- Connection string `MySql` configurada em `api/ClientesApi/appsettings.json` (a API acessa o MySQL diretamente via `MySql.Data.MySqlClient`, sem necessidade de driver ODBC)
+- Caminho do executável `CLIENTES.exe` configurado em `api/ClientesApi/appsettings.json` na chave `Cobol:ExePath`
 
 ### Passos
 
@@ -75,13 +76,17 @@ legacy-client-modernization/
 cd cobol
 cobc -x -o bin/CLIENTES.exe CLIENTES.cbl
 
-# 2. Restaurar e rodar a API
+# 2. Conferir o caminho do executavel em appsettings.json
+# Chave "Cobol:ExePath" deve apontar para o caminho absoluto do CLIENTES.exe
+# gerado no passo anterior. Esse caminho e especifico de cada maquina.
+
+# 3. Restaurar e rodar a API
 cd ../api/ClientesApi
 dotnet restore
 dotnet run
 ```
 
-A API sobe por padrao em `http://localhost:5077`. O Swagger UI fica disponivel em `http://localhost:5077/swagger`.
+A API sobe por padrao em `http://localhost:5077`. O Swagger esta configurado na raiz do projeto (`RoutePrefix` vazio em `Program.cs`), entao a interface fica disponivel diretamente em `http://localhost:5077`.
 
 ### Rodando os testes automatizados
 

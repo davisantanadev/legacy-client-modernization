@@ -11,7 +11,7 @@ builder.Services.AddSwaggerGen(c =>
     {
         Title       = "Clientes API",
         Version     = "v1",
-        Description = "API de modernização do cadastro de clientes — Cooperativa Financeira Alfa"
+        Description = "API de modernização do cadastro de clientes — Cooperativa Financeira Genesis"
     });
 });
 
